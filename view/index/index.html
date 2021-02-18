@@ -1,0 +1,65 @@
+{extend name="base" /}
+﻿
+{block name="title"}小北学生体温自动上报系统{/block}
+﻿
+{block name="main"}
+<div class="mdui-container" id="app">
+    <div class="mdui-typo mdui-m-y-5">
+        <h3>小北学生自动体温上报系统，每天定时上报</h3>
+        <h5>填写小北学生app的账号和密码，账号和密码已与小北学生同步！</h5>
+    </div>
+    <div class="mdui-card">
+
+        <div class="mdui-card-content">
+
+            <div class="mdui-textfield">
+                <label class="mdui-textfield-label">账号</label>
+                <input class="mdui-textfield-input" type="text" v-model="username"/>
+            </div>
+            <div class="mdui-textfield">
+                <label class="mdui-textfield-label">密码</label>
+                <input class="mdui-textfield-input" type="password" v-model="password"/>
+            </div>
+            <div>
+                <button class="mdui-btn mdui-btn-block mdui-btn-raised mdui-color-theme-accent" @click="login">提交
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+{/block}
+﻿
+{block name="script"}
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            username: '',
+            password: '',
+        },
+        methods: {
+            login() {
+                let that = this;
+                axios.get('/auth/login', {
+                    params: {
+                        username: that.username,
+                        password: that.password,
+                    }
+
+                }).then((response) => {
+                    let res = response.data;
+                    if (res.code === 200) {
+                        msg(res.msg);
+                        location.href = '/user';
+                    } else {
+                        msg(res.msg)
+                    }
+                })
+            }
+        }
+    })
+</script>
+{/block}

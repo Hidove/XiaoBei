@@ -1,0 +1,231 @@
+{extend name="base" /}
+﻿
+{block name="title"}用户中心 - 小北学生体温自动上报系统{/block}
+{block name="head"}
+<style>
+    .limz-head {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .limz-head .title {
+        color: #333333 !important;
+        cursor: pointer;
+        font-size: 1.5rem;
+    }
+
+    .limz-head .title::before {
+        height: 0;
+
+    }
+</style>
+{/block}
+﻿
+{block name="main"}
+<div class="mdui-container" id="app">
+    <div class="mdui-typo mdui-m-y-5 limz-head">
+        <a class="title" href="">小北学生自动体温上报系统，每天定时上报，管理员邮箱i#abcyun.cc</a>
+        <a class="limz-logout" href="/auth/logout">退出登录</a>
+    </div>
+    <div class="mdui-card">
+        <div class="mdui-card-content">
+            <div class="mdui-tab mdui-tab-centered" mdui-tab>
+                <a href="#tab1" class="mdui-ripple">个人信息</a>
+                <a href="#tab2" class="mdui-ripple">上报记录</a>
+                <a href="#tab3" class="mdui-ripple">系统运行状态</a>
+            </div>
+            <div id="tab1" class="mdui-p-a-2">
+
+                <div class="mdui-textfield">
+                    <label class="mdui-textfield-label">用户名</label>
+                    <input class="mdui-textfield-input" type="text" disabled v-model="user.username"/>
+                </div>
+                <div class="mdui-textfield">
+                    <label class="mdui-textfield-label">密码</label>
+                    <input class="mdui-textfield-input" type="text" v-model="user.password"/>
+                    <div class="mdui-textfield-helper">请与小北学生密码保持一致，此处修改，无法同步修改小北学生用户密码</div>
+                </div>
+                <div class="mdui-textfield">
+                    <label class="mdui-textfield-label">地区</label>
+                    <input class="mdui-textfield-input" type="text" v-model="user.coordinates"/>
+                    <div class="mdui-textfield-helper">默认：中国-湖南省-长沙市-芙蓉区</div>
+                </div>
+                <div class="mdui-textfield">
+                    <label class="mdui-textfield-label">经纬度</label>
+                    <input class="mdui-textfield-input" type="text" v-model="user.location"/>
+                    <div class="mdui-textfield-helper">默认：113.175338,28.171459</div>
+                </div>
+                <div class="mdui-textfield">
+                    <label class="mdui-textfield-label">身体状况</label>
+                    <label class="mdui-radio">
+                        <input type="radio" name="healthState" v-model="user.healthState" value="1"/>
+                        <i class="mdui-radio-icon"></i>
+                        无异常情况（体温<37.3）&nbsp;&nbsp;
+                    </label>
+                    <label class="mdui-radio">
+                        <input type="radio" name="healthState" v-model="user.healthState" value="2"/>
+                        <i class="mdui-radio-icon"></i>
+                        有发烧、发热症状
+                    </label>
+                </div>
+                <div class="mdui-textfield">
+                    <label class="mdui-textfield-label">是否去过高风险地区</label>
+                    <label class="mdui-radio">
+                        <input type="radio" name="dangerousRegion" v-model="user.dangerousRegion" value="1"/>
+                        <i class="mdui-radio-icon"></i>
+                        是&nbsp;&nbsp;&nbsp;&nbsp;
+                    </label>
+                    <label class="mdui-radio">
+                        <input type="radio" name="dangerousRegion" v-model="user.dangerousRegion" value="2"/>
+                        <i class="mdui-radio-icon"></i>
+                        否
+                    </label>
+                </div>
+                <div class="mdui-textfield">
+                    <label class="mdui-textfield-label">其他不适症状（选填）</label>
+                    <textarea class="mdui-textfield-input" placeholder="选填" v-model="user.remark"></textarea>
+                </div>
+                <div class="mdui-textfield">
+                    <label class="mdui-textfield-label">注册时间</label>
+                    <input class="mdui-textfield-input" type="text" disabled v-model="user.create_time"/>
+                </div>
+                <div class="mdui-textfield">
+                    <label class="mdui-textfield-label">最后执行时间</label>
+                    <input class="mdui-textfield-input" type="text" disabled v-model="user.run_time"/>
+                </div>
+                <div>
+                    <button class="mdui-btn mdui-btn-block mdui-btn-raised mdui-color-theme-accent" @click="save">提交
+                    </button>
+                </div>
+            </div>
+            <div id="tab2" class="mdui-p-a-2">
+                <div class="mdui-text-right mdui-m-b-3">
+                    <button class="mdui-btn mdui-btn-raised mdui-color-theme-accent" @click="test">
+                        测试执行
+                    </button>
+                </div>
+                <div class="mdui-table-fluid">
+                    <table class="mdui-table">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>地区</th>
+                            <th>经纬度</th>
+                            <th>身体状况</th>
+                            <th>是否去过高风险地区</th>
+                            <th>其他不适症状</th>
+                            <th>执行结果</th>
+                            <th>上报时间</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="(item,index) in logs" key="index">
+                            <td>{{index+1}}</td>
+                            <td>{{item.coordinates}}</td>
+                            <td>{{item.location}}</td>
+                            <td>{{item.healthState==1?'无异常情况（体温<37.3）':'有发烧、发热症状'}}</td>
+                            <td>{{item.dangerousRegion==1?'是':'否'}}</td>
+                            <td>{{item.remark}}</td>
+                            <td>{{item.message}}</td>
+                            <td>{{item.create_time}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="tab3" class="mdui-p-a-2">
+                <div class="mdui-table-fluid">
+                    <table class="mdui-table">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>用户名</th>
+                            <th>地区</th>
+                            <th>执行结果</th>
+                            <th>上报时间</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="(item,index) in status" key="index">
+                            <td>{{index+1}}</td>
+                            <td>{{item.username}}</td>
+                            <td>{{item.coordinates}}</td>
+                            <td>{{item.message}}</td>
+                            <td>{{item.create_time}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+{/block}
+﻿
+{block name="script"}
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            user: {
+                username: '{$hidove.user.username}',
+                password: '{$hidove.user.password}',
+                coordinates: '{$hidove.user.coordinates}',
+                location: '{$hidove.user.location}',
+                healthState: '{$hidove.user.healthState}',
+                dangerousRegion: '{$hidove.user.dangerousRegion}',
+                remark: '{$hidove.user.remark}',
+                create_time: '{$hidove.user.create_time}',
+                run_time: '{:fomate_date($hidove.user.run_time)}',
+            }
+            ,
+            logs: [],
+            status: [],
+        },
+        created() {
+            this.get_logs();
+            this.get_status();
+        },
+        methods: {
+            save() {
+                let that = this;
+                axios.post('/user/post', that.user)
+                    .then((response) => {
+                        let res = response.data;
+                        msg(res.msg);
+                    })
+            },
+            get_logs() {
+                let that = this;
+                axios.get('/user/log')
+                    .then((response) => {
+                        let res = response.data;
+                        that.logs = res.data;
+                    })
+            },
+            get_status() {
+                let that = this;
+                axios.get('/api/status')
+                    .then((response) => {
+                        let res = response.data;
+                        that.status = res.data;
+                    })
+            },
+            test() {
+                let that = this;
+                axios.get('/user/test')
+                    .then((response) => {
+                        let res = response.data;
+                        if (res.code === 200) {
+                            that.get_logs();
+                            that.get_status();
+                        }
+                        msg(res.msg);
+                    })
+            }
+        }
+    })
+</script>
+{/block}
