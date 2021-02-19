@@ -5,6 +5,7 @@ namespace app\controller;
 use app\BaseController;
 use app\model\Log;
 use Task\Xiaobei;
+use think\facade\Cache;
 use think\facade\Request;
 use think\facade\View;
 
@@ -45,10 +46,15 @@ class User extends BaseController
     public function test(){
         $user = get_user();
         $xiaobei = new Xiaobei();
-        $token = $xiaobei->login($user->username, base64_encode($user->password));
+        $token = Cache::get(__CLASS__ . '_' . __FUNCTION__ . '_token_' . $user->username);
+        if (empty($token)) {
+            $token = $xiaobei->login($user->username, base64_encode($user->password));
+            Cache::set(__CLASS__ . '_' . __FUNCTION__ . '_token_' . $user->username, $token, 3600);
+        }
         if ($token) {
             $send = $xiaobei->send($token);
             if ($send) {
+                $user->run_time = time();
                 $message = '上报成功';
             } else {
                 $message = $xiaobei->getError();
@@ -65,7 +71,6 @@ class User extends BaseController
             'remark' => $user->remark,
             'message' => $message,
         ]);
-        $user->run_time = time();
         $user->create_time = strtotime($user->create_time);
         $user->save();
         if ($message === '上报成功'){

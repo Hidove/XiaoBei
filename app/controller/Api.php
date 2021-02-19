@@ -6,6 +6,7 @@ namespace app\controller;
 
 use app\model\Log;
 use Task\Xiaobei;
+use think\facade\Cache;
 use think\facade\Request;
 
 class Api
@@ -22,10 +23,15 @@ class Api
         $xiaobei = new Xiaobei();
         $message = [];
         foreach ($Users as $k => $v) {
-            $token = $xiaobei->login($v->username, base64_encode($v->password));
+            $token = Cache::get(__CLASS__ . '_' . __FUNCTION__ . '_token_' . $v->username);
+            if (empty($token)) {
+                $token = $xiaobei->login($v->username, base64_encode($v->password));
+                Cache::set(__CLASS__ . '_' . __FUNCTION__ . '_token_' . $v->username, $token, 3600);
+            }
             if ($token) {
                 $send = $xiaobei->send($token);
                 if ($send) {
+                    $v->run_time = time();
                     $result = '上报成功';
                 } else {
                     $result = $xiaobei->getError();
@@ -43,7 +49,6 @@ class Api
                 'remark' => $v->remark,
                 'message' => $result,
             ]);
-            $v->run_time = time();
             $v->create_time = strtotime($v->create_time);
             $v->save();
         }

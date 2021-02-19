@@ -7,6 +7,7 @@
     <div class="mdui-typo mdui-m-y-5">
         <h3>小北学生自动体温上报系统，每天定时上报</h3>
         <h5>填写小北学生app的账号和密码，账号和密码已与小北学生同步！</h5>
+        <h5>建议在小北学生app绑定手机号后，再用手机号登陆！</h5>
     </div>
     <div class="mdui-card">
 
@@ -21,7 +22,7 @@
                 <input class="mdui-textfield-input" type="password" v-model="password"/>
             </div>
             <div>
-                <button class="mdui-btn mdui-btn-block mdui-btn-raised mdui-color-theme-accent" @click="login">提交
+                <button class="mdui-btn mdui-btn-block mdui-btn-raised mdui-color-theme-accent" @click="login" @keyup.enter="login">提交
                 </button>
             </div>
 
