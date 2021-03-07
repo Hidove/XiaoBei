@@ -82,6 +82,19 @@
                     </label>
                 </div>
                 <div class="mdui-textfield">
+                    <label class="mdui-textfield-label">是否开启自动上报</label>
+                    <label class="mdui-radio">
+                        <input type="radio" name="status" v-model="user.status" value="1"/>
+                        <i class="mdui-radio-icon"></i>
+                        是&nbsp;&nbsp;&nbsp;&nbsp;
+                    </label>
+                    <label class="mdui-radio">
+                        <input type="radio" name="status" v-model="user.status" value="0"/>
+                        <i class="mdui-radio-icon"></i>
+                        否
+                    </label>
+                </div>
+                <div class="mdui-textfield">
                     <label class="mdui-textfield-label">其他不适症状（选填）</label>
                     <textarea class="mdui-textfield-input" placeholder="选填" v-model="user.remark"></textarea>
                 </div>
@@ -177,6 +190,7 @@
                 healthState: '{$hidove.user.healthState}',
                 dangerousRegion: '{$hidove.user.dangerousRegion}',
                 remark: '{$hidove.user.remark}',
+                status: '{$hidove.user.status}',
                 create_time: '{$hidove.user.create_time}',
                 run_time: '{:fomate_date($hidove.user.run_time)}',
             }

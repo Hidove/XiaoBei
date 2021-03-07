@@ -28,6 +28,7 @@ class User extends BaseController
             'healthState',
             'dangerousRegion',
             'remark',
+            'status',
         ]);
         $user = get_user();
         $user->data($param)->save();

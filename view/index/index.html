@@ -19,10 +19,10 @@
             </div>
             <div class="mdui-textfield">
                 <label class="mdui-textfield-label">密码</label>
-                <input class="mdui-textfield-input" type="password" v-model="password"/>
+                <input class="mdui-textfield-input" type="password" v-model="password" @keyup.enter="login"/>
             </div>
             <div>
-                <button class="mdui-btn mdui-btn-block mdui-btn-raised mdui-color-theme-accent" @click="login" @keyup.enter="login">提交
+                <button class="mdui-btn mdui-btn-block mdui-btn-raised mdui-color-theme-accent" @click="login">提交
                 </button>
             </div>
 

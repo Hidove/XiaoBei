@@ -17,6 +17,7 @@ class Api
         $limit = Request::param('limit', 10);
 
         $Users = \app\model\User::whereTime('run_time', '<', strtotime(date('Y-m-d')))
+            ->where('status',1)
             ->order('run_time', 'asc')
             ->limit($limit)
             ->select();

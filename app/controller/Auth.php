@@ -31,6 +31,7 @@ class Auth
                     'healthState' => '1',
                     'dangerousRegion' => '2',
                     'remark' => '',
+                    'status' => 1,
                     'run_time' => 0,
                 ]);
             } else {
