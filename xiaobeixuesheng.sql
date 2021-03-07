@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 18/02/2021 17:48:51
+ Date: 07/03/2021 16:41:08
 */
 
 SET NAMES utf8mb4;
@@ -32,11 +32,7 @@ CREATE TABLE `hidove_log`  (
   `create_time` int(11) NOT NULL,
   `message` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of hidove_log
--- ----------------------------
+) ENGINE = MyISAM AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for hidove_user
@@ -51,13 +47,10 @@ CREATE TABLE `hidove_user`  (
   `healthState` int(11) NOT NULL,
   `dangerousRegion` int(11) NOT NULL,
   `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `create_time` int(11) NULL DEFAULT NULL,
+  `status` int(11) NOT NULL DEFAULT 1,
+  `create_time` int(11) NOT NULL,
   `run_time` int(11) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of hidove_user
--- ----------------------------
+) ENGINE = MyISAM AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;
