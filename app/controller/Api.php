@@ -17,40 +17,64 @@ class Api
         $limit = Request::param('limit', 10);
 
         $Users = \app\model\User::whereTime('run_time', '<', strtotime(date('Y-m-d')))
-            ->where('status',1)
+            ->where('status', 1)
             ->order('run_time', 'asc')
             ->limit($limit)
             ->select();
         $xiaobei = new Xiaobei();
         $message = [];
         foreach ($Users as $k => $v) {
+            if ($v->send_time->hour >= date('H')) {
+                continue;
+            }
+            if ($v->send_time->hour == date('H') && $v->send_time->minute >= date('i')) {
+                continue;
+            }
+            $userPassword = Cache::get(__CLASS__ . '_' . __FUNCTION__ . '_password_' . $v->username);
+            if (!empty($userPassword)) {
+                if ($userPassword === $v->password) {
+                    continue;
+                }
+
+            }
+
             $token = Cache::get(__CLASS__ . '_' . __FUNCTION__ . '_token_' . $v->username);
             if (empty($token)) {
                 $token = $xiaobei->login($v->username, base64_encode($v->password));
                 Cache::set(__CLASS__ . '_' . __FUNCTION__ . '_token_' . $v->username, $token, 3600);
             }
             if ($token) {
-                $send = $xiaobei->send($token);
+                $send = $xiaobei->send($token, $v);
                 if ($send) {
                     $v->run_time = time();
                     $result = '上报成功';
                 } else {
+                    $v->run_time = strtotime(date('Y-m-d')) - 1;
+
+                    Cache::set(__CLASS__ . '_' . __FUNCTION__ . '_password_' . $v->username, $v->password);
                     $result = $xiaobei->getError();
                 }
             } else {
+                $v->run_time = strtotime(date('Y-m-d')) - 1;
+                Cache::set(__CLASS__ . '_' . __FUNCTION__ . '_password_' . $v->username, $v->password);
                 $result = $xiaobei->getError();
             }
             $message[$k] = fomate_id($v->username) . '：' . $result;
             Log::create([
                 'user_id' => $v->id,
+                'temperature' => $v->temperature,
                 'coordinates' => $v->coordinates,
                 'location' => $v->location,
                 'healthState' => $v->healthState,
                 'dangerousRegion' => $v->dangerousRegion,
+                'dangerousRegionRemark' => $v->dangerousRegionRemark,
+                'contactSituation' => $v->contactSituation,
+                'goOut' => $v->goOut,
+                'goOutRemark' => $v->goOutRemark,
+                'familySituation' => $v->familySituation,
                 'remark' => $v->remark,
                 'message' => $result,
             ]);
-            $v->create_time = strtotime($v->create_time);
             $v->save();
         }
         return msg(200, '执行成功', $message);

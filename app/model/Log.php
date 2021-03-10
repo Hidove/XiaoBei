@@ -11,6 +11,7 @@ use think\Model;
 class Log extends Model
 {
     protected $autoWriteTimestamp = true;
+    protected $readonly = ['create_time'];
 
     public function user()
     {

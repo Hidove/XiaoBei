@@ -15,10 +15,10 @@ github：<https://github.com/Hidove/XiaoBei>
 根目录.env文件CONFIG下的token值
 
 ## 演示图
-![yWUJyD.png](https://s3.ax1x.com/2021/02/18/yWUJyD.png)
-![yWUsl8.md.png](https://s3.ax1x.com/2021/02/18/yWUsl8.png)
-![yWUJyD.md.png](https://s3.ax1x.com/2021/02/18/yWUJyD.png)
-![yWUUwd.md.png](https://s3.ax1x.com/2021/02/18/yWUUwd.png)
-![yWUwFI.md.png](https://s3.ax1x.com/2021/02/18/yWUwFI.png)
+![](https://s3.ax1x.com/2021/02/18/yWUJyD.png)
+![](https://s3.ax1x.com/2021/03/10/6Jlf56.png)
+![](https://s3.ax1x.com/2021/03/10/6J1qlF.png)
+![](https://s3.ax1x.com/2021/03/10/6J3HAI.png)
+![](https://s3.ax1x.com/2021/03/10/6J1kaq.png)
 
 

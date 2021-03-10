@@ -30,14 +30,19 @@ class Auth
                     'location' => '113.175338,28.171459',
                     'healthState' => '1',
                     'dangerousRegion' => '2',
+                    'dangerousRegionRemark' => '',
+                    'contactSituation' => '2',
+                    'goOut' => '1',
+                    'goOutRemark' => '',
+                    'familySituation' => '1',
                     'remark' => '',
                     'status' => 1,
+                    'send_time' => ['hour' => 0, 'minute' => 0],
                     'run_time' => 0,
                 ]);
             } else {
                 if ($model->password !== $password) {
                     $model->password = $password;
-                    $model->create_time = strtotime($model->create_time);
                     $model->save();
                 }
             }
@@ -46,7 +51,9 @@ class Auth
         }
         return msg(400, $driver->getError());
     }
-    public function logout(){
+
+    public function logout()
+    {
         Session::clear();
         return redirect('/');
     }

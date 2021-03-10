@@ -23,12 +23,19 @@ class User extends BaseController
     {
         $param = Request::only([
             'password',
+            'temperature',
             'coordinates',
             'location',
             'healthState',
             'dangerousRegion',
+            'dangerousRegionRemark',
+            'contactSituation',
+            'goOut',
+            'goOutRemark',
+            'familySituation',
             'remark',
             'status',
+            'send_time',
         ]);
         $user = get_user();
         $user->data($param)->save();
@@ -53,7 +60,7 @@ class User extends BaseController
             Cache::set(__CLASS__ . '_' . __FUNCTION__ . '_token_' . $user->username, $token, 3600);
         }
         if ($token) {
-            $send = $xiaobei->send($token);
+            $send = $xiaobei->send($token,$user);
             if ($send) {
                 $user->run_time = time();
                 $message = '上报成功';
@@ -65,14 +72,19 @@ class User extends BaseController
         }
         Log::create([
             'user_id' => $user->id,
+            'temperature' => $user->temperature,
             'coordinates' => $user->coordinates,
             'location' => $user->location,
             'healthState' => $user->healthState,
             'dangerousRegion' => $user->dangerousRegion,
+            'dangerousRegionRemark' => $user->dangerousRegionRemark,
+            'contactSituation' => $user->contactSituation,
+            'goOut' => $user->goOut,
+            'goOutRemark' => $user->goOutRemark,
+            'familySituation' => $user->familySituation,
             'remark' => $user->remark,
             'message' => $message,
         ]);
-        $user->create_time = strtotime($user->create_time);
         $user->save();
         if ($message === '上报成功'){
             return msg(200,$message);
