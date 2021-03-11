@@ -24,7 +24,7 @@ class Api
         $xiaobei = new Xiaobei();
         $message = [];
         foreach ($Users as $k => $v) {
-            if ($v->send_time->hour >= date('H')) {
+            if ($v->send_time->hour > date('H')) {
                 continue;
             }
             if ($v->send_time->hour == date('H') && $v->send_time->minute >= date('i')) {
