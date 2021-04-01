@@ -14,8 +14,7 @@ class Api
 
     public function action()
     {
-        $limit = Request::param('limit', 10);
-
+        $limit = Cache::get(__CLASS__ . '_' . __FUNCTION__ . '_limit', 10);
         $Users = \app\model\User::whereTime('run_time', '<', strtotime(date('Y-m-d')))
             ->where('status', 1)
             ->order('run_time', 'asc')
@@ -23,6 +22,7 @@ class Api
             ->select();
         $xiaobei = new Xiaobei();
         $message = [];
+        $success = 0;
         foreach ($Users as $k => $v) {
             if ($v->send_time->hour > date('H')) {
                 continue;
@@ -48,6 +48,8 @@ class Api
                 if ($send) {
                     $v->run_time = time();
                     $result = '上报成功';
+                    $success++;
+
                 } else {
                     $v->run_time = strtotime(date('Y-m-d')) - 1;
 
@@ -76,6 +78,11 @@ class Api
                 'message' => $result,
             ]);
             $v->save();
+        }
+        if ($success < 1) {
+            //防止淤积，逐步增长任务数目
+            $limit++;
+            Cache::set(__CLASS__ . '_' . __FUNCTION__ . '_limit', $limit);
         }
         return msg(200, '执行成功', $message);
     }

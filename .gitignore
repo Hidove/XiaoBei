@@ -1,6 +1,5 @@
 /.idea
 /.vscode
-/vendor
 .sqlite.env
 database.db
 *.log
