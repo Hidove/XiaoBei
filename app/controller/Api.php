@@ -8,6 +8,7 @@ use app\model\Log;
 use Task\Xiaobei;
 use think\facade\Cache;
 use think\facade\Request;
+use think\helper\Str;
 
 class Api
 {
@@ -23,6 +24,7 @@ class Api
         $xiaobei = new Xiaobei();
         $message = [];
         $success = 0;
+        $result = '';
         foreach ($Users as $k => $v) {
             if ($v->send_time->hour > date('H')) {
                 continue;
@@ -53,14 +55,19 @@ class Api
                 } else {
                     $v->run_time = strtotime(date('Y-m-d')) - 1;
 
-                    Cache::set(__CLASS__ . '_' . __FUNCTION__ . '_password_' . $v->username, $v->password);
+                    Cache::set(__CLASS__ . '_' . __FUNCTION__ . '_password_' . $v->username, $v->password,3600);
                     $result = $xiaobei->getError();
                 }
             } else {
                 $v->run_time = strtotime(date('Y-m-d')) - 1;
-                Cache::set(__CLASS__ . '_' . __FUNCTION__ . '_password_' . $v->username, $v->password);
+                Cache::set(__CLASS__ . '_' . __FUNCTION__ . '_password_' . $v->username, $v->password,3600);
                 $result = $xiaobei->getError();
+                // 停止执行账号异常、密码错误、已停用的账号
+                if(Str::contains($result,['用户不存在','密码错误','已停用'])){
+                    $v->status = 0;
+                }
             }
+            $result = str_replace($v->username,fomate_id($v->username),$result);
             $message[$k] = fomate_id($v->username) . '：' . $result;
             Log::create([
                 'user_id' => $v->id,
@@ -90,7 +97,8 @@ class Api
     public function status()
     {
         $logs = Log::order('create_time', 'desc')
-            ->limit(20)
+            ->page(Request::param('page',1))
+            ->limit(Request::param('limit',20))
             ->with(['user' => function ($query) {
                 $query->field('id,username');
             }])
@@ -98,6 +106,8 @@ class Api
         foreach ($logs as &$v) {
 
             $v['username'] = fomate_id($v['user']['username']);
+            $v['message'] = str_replace($v['user']['username'],$v['username'],$v['message']);
+
             unset($v['user']);
         }
 

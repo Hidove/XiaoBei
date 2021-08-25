@@ -42,7 +42,7 @@ class Xiaobei
             'Content-Type:application/json; charset=utf-8'
         ]);
         $res = json_decode($res);
-        if (empty($res) || empty($res->code)) {
+        if (empty($res) || empty($res->code) || empty($res->msg)) {
             $this->setError('登录返回数据异常，可能是小北学生服务器崩了，请联系管理员');
             return false;
         }
@@ -79,7 +79,7 @@ class Xiaobei
             'Authorization:Bearer ' . $token,
         ]);
         $res = json_decode($res);
-        if (empty($res) || empty($res->code)) {
+        if (empty($res) || empty($res->code) || empty($res->msg)) {
             $this->setError('体温上报返回数据异常，可能是小北学生服务器崩了，请联系管理员');
             return false;
         }

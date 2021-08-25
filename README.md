@@ -7,8 +7,8 @@
 
 ## 下载
 
-演示地址：<http://xiaobei.dalaola.com>
-github：<https://github.com/Hidove/XiaoBei>
+* 演示地址：<http://xiaobei.dalaola.com>
+* github：<https://github.com/Hidove/XiaoBei>
 
 ### token设置
 
