@@ -25,7 +25,7 @@ class Xiaobei
 
     public function login($username, $password)
     {
-        $hidove_get = hidove_get('https://xiaobei.yinghuaonline.com/prod-api/captchaImage');
+        $hidove_get = hidove_get('https://xiaobei.yinghuaonline.com/xiaobei-api/captchaImage');
         $captcha = json_decode($hidove_get);
         if (empty($captcha) || $captcha->code !== 200) {
             $this->setError('小北学生认证系统发生异常，请联系管理员');
@@ -38,7 +38,7 @@ class Xiaobei
             'uuid' => $captcha->uuid
         ];
         $userInfo = json_encode($userInfo);
-        $res = hidove_post('https://xiaobei.yinghuaonline.com/prod-api/login', $userInfo, '', [
+        $res = hidove_post('https://xiaobei.yinghuaonline.com/xiaobei-api/login', $userInfo, '', [
             'Content-Type:application/json; charset=utf-8'
         ]);
         $res = json_decode($res);
@@ -74,7 +74,7 @@ class Xiaobei
             }
         }
         $postInfo = json_encode($postInfo2);
-        $res = hidove_post('https://xiaobei.yinghuaonline.com/prod-api/student/health', $postInfo, '', [
+        $res = hidove_post('https://xiaobei.yinghuaonline.com/xiaobei-api/student/health', $postInfo, '', [
             'Content-Type:application/json; charset=utf-8',
             'Authorization:Bearer ' . $token,
         ]);
