@@ -10,8 +10,12 @@ function msg($code = 200, $msg = 'success', $data = [])
     ]);
 }
 
-function hidove_get($url, $header = ['Content-Type: application/json'], $referer = null)
+function hidove_get($url, $headers = [], $referer = null)
 {
+
+    $headers = array_merge([
+        'User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1',
+    ], $headers);
     // 创建一个新 cURL 资源
     $curl = curl_init();
     // 设置URL和相应的选项
@@ -29,9 +33,9 @@ function hidove_get($url, $header = ['Content-Type: application/json'], $referer
     #TRUE 将 curl_exec获取的信息以字符串返回，而不是直接输出。
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     #设置useragent
-    curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36");   // 伪造ua
+    curl_setopt($curl, CURLOPT_USERAGENT, 'User-Agent:Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_8; en-us) AppleWebKit/534.50 (KHTML, like Gecko) Version/5.1 Safari/534.50');   // 伪造ua
     #设置header
-    curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
+    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
     #伪造来源网址REFERER
     curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);        // 跟踪重定向
     curl_setopt($curl, CURLOPT_REFERER, empty($referer) ? $url : $referer);
@@ -52,10 +56,13 @@ function hidove_post(
     $url,
     $post,
     $referer = 'https://www.baidu.com',
-    $headers = ['User-Agent:Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_8; en-us) AppleWebKit/534.50 (KHTML, like Gecko) Version/5.1 Safari/534.50']
+    $headers = []
 )
 {
 
+    $headers = array_merge([
+        'User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1',
+    ], $headers);
     // 创建一个新 cURL 资源
     $curl = curl_init();
     // 设置URL和相应的选项
