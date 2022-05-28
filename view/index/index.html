@@ -1,13 +1,13 @@
 {extend name="base" /}
 ﻿
-{block name="title"}小北学生体温自动上报系统{/block}
+{block name="title"}小北助手{/block}
 ﻿
 {block name="main"}
 <div class="mdui-container" id="app">
     <div class="mdui-typo mdui-m-y-5">
-        <h3>小北学生自动体温上报系统，每天定时上报</h3>
+        <h3>小北助手</h3>
         <h5>填写小北学生app的账号和密码，账号和密码已与小北学生同步！</h5>
-        <h5>建议在小北学生app绑定手机号后，再用手机号登陆！</h5>
+        <h5>强烈建议在小北学生app绑定手机号后，再用手机号登陆！</h5>
     </div>
     <div class="mdui-card">
 
@@ -43,20 +43,22 @@
         },
         methods: {
             login() {
-                let that = this;
-                axios.get('/auth/login', {
+                if (!this.username || !this.password){
+                    $message.error("账号或密码不得为空")
+                    return
+                }
+                $request.get('/auth/login', {
                     params: {
-                        username: that.username,
-                        password: that.password,
+                        username: this.username,
+                        password: this.password,
                     }
 
-                }).then((response) => {
-                    let res = response.data;
+                }).then((res) => {
                     if (res.code === 200) {
-                        msg(res.msg);
+                        $message.success(res.msg);
                         location.href = '/user';
                     } else {
-                        msg(res.msg)
+                        $message.error(res.msg)
                     }
                 })
             }

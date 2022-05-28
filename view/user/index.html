@@ -1,284 +1,292 @@
 {extend name="base" /}
 ﻿
-{block name="title"}用户中心 - 小北学生体温自动上报系统{/block}
+{block name="title"}用户中心 - 小北助手{/block}
 {block name="head"}
 <style>
-    .limz-head {
+    .xb-head {
         display: flex;
         justify-content: space-between;
     }
 
-    .limz-head .title {
+    .xb-head .title {
         color: #333333 !important;
         cursor: pointer;
         font-size: 1.5rem;
     }
 
-    .limz-head .title::before {
+    .xb-head .title::before {
         height: 0;
 
+    }
+
+    .mdui-table td {
+        white-space: nowrap;
     }
 </style>
 {/block}
 ﻿
 {block name="main"}
-<div class="mdui-container" id="app">
-    <div class="mdui-typo mdui-m-y-5 limz-head">
-        <a class="title" href="">小北学生自动体温上报系统，每天定时上报，管理员邮箱i#abcyun.cc</a>
+<div class="mdui-container mdui-m-b-3" id="app">
+    <div class="mdui-typo mdui-m-y-5 xb-head">
+        <a class="title" href="">小北助手，管理员邮箱i#abcyun.cc</a>
         <a class="limz-logout" href="/auth/logout">退出登录</a>
     </div>
     <div class="mdui-card">
         <div class="mdui-card-content">
-            <div class="mdui-tab mdui-tab-centered mdui-tab-scrollable" mdui-tab>
+            <div class=" mdui-tab mdui-tab-centered mdui-tab-scrollable" mdui-tab>
                 <a href="#tab1" class="mdui-ripple">个人信息</a>
                 <a href="#tab2" class="mdui-ripple">上报记录</a>
                 <a href="#tab3" class="mdui-ripple">系统运行状态</a>
                 <a href="#tab4" class="mdui-ripple">系统更新日志</a>
             </div>
-            <div id="tab1" class="mdui-p-a-2">
+        </div>
+        <div id="tab1" class="mdui-card-content">
 
-                <div class="mdui-textfield">
-                    <label class="mdui-textfield-label">用户名</label>
-                    <input class="mdui-textfield-input" type="text" disabled v-model="user.username"/>
-                </div>
-                <div class="mdui-textfield">
-                    <label class="mdui-textfield-label">密码</label>
-                    <input class="mdui-textfield-input" type="text" v-model="user.password"/>
-                    <div class="mdui-textfield-helper">请与小北学生密码保持一致，此处修改，无法同步修改小北学生用户密码</div>
-                </div>
-                <div class="mdui-textfield">
-                    <label class="mdui-textfield-label">体温</label>
-                    <input class="mdui-textfield-input" type="text" v-model="user.temperature"/>
-                    <div class="mdui-textfield-helper">默认：36.5</div>
-                </div>
-                <div class="mdui-textfield">
-                    <label class="mdui-textfield-label">地区</label>
-                    <input class="mdui-textfield-input" type="text" v-model="user.coordinates"/>
-                    <div class="mdui-textfield-helper">默认：中国-湖南省-长沙市-芙蓉区</div>
-                </div>
-                <div class="mdui-textfield">
-                    <label class="mdui-textfield-label">经纬度</label>
-                    <input class="mdui-textfield-input" type="text" v-model="user.location"/>
-                    <div class="mdui-textfield-helper">默认：113.175338,28.171459</div>
-                </div>
-                <div class="mdui-textfield">
-                    <label class="mdui-textfield-label">身体状况</label>
-                    <label class="mdui-radio">
-                        <input type="radio" name="healthState" v-model="user.healthState" value="1"/>
-                        <i class="mdui-radio-icon"></i>
-                        无异常情况（体温<37.3）&nbsp;&nbsp;
-                    </label>
-                    <label class="mdui-radio">
-                        <input type="radio" name="healthState" v-model="user.healthState" value="2"/>
-                        <i class="mdui-radio-icon"></i>
-                        有发烧、发热症状
-                    </label>
-                </div>
-                <div class="mdui-textfield">
-                    <label class="mdui-textfield-label">近七日是否去过高风险地区</label>
-                    <label class="mdui-radio">
-                        <input type="radio" name="dangerousRegion" v-model="user.dangerousRegion" value="1"/>
-                        <i class="mdui-radio-icon"></i>
-                        是&nbsp;&nbsp;&nbsp;&nbsp;
-                    </label>
-                    <label class="mdui-radio">
-                        <input type="radio" name="dangerousRegion" v-model="user.dangerousRegion" value="2"/>
-                        <i class="mdui-radio-icon"></i>
-                        否
-                    </label>
-                    <textarea class="mdui-textfield-input" placeholder="选填"
-                              v-model="user.dangerousRegionRemark"></textarea>
-                </div>
-                <div class="mdui-textfield">
-                    <label class="mdui-textfield-label">近七日接触情况</label>
-                    <label class="mdui-radio">
-                        <input type="radio" name="contactSituation" v-model="user.contactSituation" value="0"/>
-                        <i class="mdui-radio-icon"></i>
-                        接触过中高风险地区人员&nbsp;&nbsp;&nbsp;&nbsp;
-                    </label>
-                    <label class="mdui-radio">
-                        <input type="radio" name="contactSituation" v-model="user.contactSituation" value="1"/>
-                        <i class="mdui-radio-icon"></i>
-                        与确诊或疑似病例有接触&nbsp;&nbsp;&nbsp;&nbsp;
-                    </label>
-                    <label class="mdui-radio">
-                        <input type="radio" name="contactSituation" v-model="user.contactSituation" value="2"/>
-                        <i class="mdui-radio-icon"></i>
-                        无接触
-                    </label>
-                </div>
+            <div class="mdui-textfield">
+                <label class="mdui-textfield-label">用户名</label>
+                <input class="mdui-textfield-input" type="text" disabled v-model="user.username"/>
+            </div>
+            <div class="mdui-textfield">
+                <label class="mdui-textfield-label">密码</label>
+                <input class="mdui-textfield-input" type="text" v-model="user.password"/>
+                <div class="mdui-textfield-helper">请与小北学生密码保持一致，此处修改，无法同步修改小北学生用户密码</div>
+            </div>
+            <div class="mdui-textfield">
+                <label class="mdui-textfield-label">体温</label>
+                <input class="mdui-textfield-input" type="text" v-model="user.temperature"/>
+                <div class="mdui-textfield-helper">默认：36.5</div>
+            </div>
+            <div class="mdui-textfield">
+                <label class="mdui-textfield-label">地区</label>
+                <input class="mdui-textfield-input" type="text" v-model="user.coordinates"/>
+                <div class="mdui-textfield-helper">默认：中国-湖南省-长沙市-芙蓉区</div>
+            </div>
+            <div class="mdui-textfield">
+                <label class="mdui-textfield-label">经纬度</label>
+                <input class="mdui-textfield-input" type="text" v-model="user.location"/>
+                <div class="mdui-textfield-helper">默认：113.175338,28.171459，英文逗号分割</div>
+            </div>
+            <a class="mdui-chip" href="https://jingweidu.bmcx.com/" target="_blank">
+              <span class="mdui-chip-icon">
+                <i class="mdui-icon material-icons">face</i>
+              </span>
+                <span class="mdui-chip-title">经纬度查询工具</span>
+            </a>
+            <div class="mdui-textfield">
+                <label class="mdui-textfield-label">身体状况</label>
+                <label class="mdui-radio">
+                    <input type="radio" name="healthState" v-model="user.healthState" value="1"/>
+                    <i class="mdui-radio-icon"></i>
+                    无异常情况（体温<37.3）&nbsp;&nbsp;
+                </label>
+                <label class="mdui-radio">
+                    <input type="radio" name="healthState" v-model="user.healthState" value="2"/>
+                    <i class="mdui-radio-icon"></i>
+                    有发烧、发热症状
+                </label>
+            </div>
+            <div class="mdui-textfield">
+                <label class="mdui-textfield-label">近七日是否去过高风险地区</label>
+                <label class="mdui-radio">
+                    <input type="radio" name="dangerousRegion" v-model="user.dangerousRegion" value="1"/>
+                    <i class="mdui-radio-icon"></i>
+                    是&nbsp;&nbsp;&nbsp;&nbsp;
+                </label>
+                <label class="mdui-radio">
+                    <input type="radio" name="dangerousRegion" v-model="user.dangerousRegion" value="2"/>
+                    <i class="mdui-radio-icon"></i>
+                    否
+                </label>
+                <textarea class="mdui-textfield-input" placeholder="选填"
+                          v-model="user.dangerousRegionRemark"></textarea>
+            </div>
+            <div class="mdui-textfield">
+                <label class="mdui-textfield-label">近七日接触情况</label>
+                <label class="mdui-radio">
+                    <input type="radio" name="contactSituation" v-model="user.contactSituation" value="0"/>
+                    <i class="mdui-radio-icon"></i>
+                    接触过中高风险地区人员&nbsp;&nbsp;&nbsp;&nbsp;
+                </label>
+                <label class="mdui-radio">
+                    <input type="radio" name="contactSituation" v-model="user.contactSituation" value="1"/>
+                    <i class="mdui-radio-icon"></i>
+                    与确诊或疑似病例有接触&nbsp;&nbsp;&nbsp;&nbsp;
+                </label>
+                <label class="mdui-radio">
+                    <input type="radio" name="contactSituation" v-model="user.contactSituation" value="2"/>
+                    <i class="mdui-radio-icon"></i>
+                    无接触
+                </label>
+            </div>
 
-                <div class="mdui-textfield">
-                    <label class="mdui-textfield-label">近七日是否有跨区域（城市）的外出</label>
-                    <label class="mdui-radio">
-                        <input type="radio" name="goOut" v-model="user.goOut" value="1"/>
-                        <i class="mdui-radio-icon"></i>
-                        无外出&nbsp;&nbsp;&nbsp;&nbsp;
-                    </label>
-                    <label class="mdui-radio">
-                        <input type="radio" name="goOut" v-model="user.goOut" value="2"/>
-                        <i class="mdui-radio-icon"></i>
-                        有外出
-                    </label>
-                    <textarea class="mdui-textfield-input" placeholder="选填" v-model="user.goOutRemark"></textarea>
-                </div>
-                <div class="mdui-textfield">
-                    <label class="mdui-textfield-label">同住家人身体情况</label>
-                    <label class="mdui-radio">
-                        <input type="radio" name="familySituation" v-model="user.familySituation" value="1"/>
-                        <i class="mdui-radio-icon"></i>
-                        无异常&nbsp;&nbsp;&nbsp;&nbsp;
-                    </label>
-                    <label class="mdui-radio">
-                        <input type="radio" name="familySituation" v-model="user.familySituation" value="2"/>
-                        <i class="mdui-radio-icon"></i>
-                        有发热
-                    </label>
-                </div>
-                <div class="mdui-textfield">
-                    <label class="mdui-textfield-label">其他不适症状（选填）</label>
-                    <textarea class="mdui-textfield-input" placeholder="选填" v-model="user.remark"></textarea>
-                </div>
-                <div class="mdui-textfield">
-                    <label class="mdui-textfield-label">是否开启自动上报</label>
-                    <label class="mdui-radio">
-                        <input type="radio" name="status" v-model="user.status" value="1"/>
-                        <i class="mdui-radio-icon"></i>
-                        是&nbsp;&nbsp;&nbsp;&nbsp;
-                    </label>
-                    <label class="mdui-radio">
-                        <input type="radio" name="status" v-model="user.status" value="0"/>
-                        <i class="mdui-radio-icon"></i>
-                        否
-                    </label>
-                </div>
-                <div class="mdui-textfield">
-                    <label class="mdui-textfield-label">每日上报时间</label>
-                    <select class="mdui-select" v-model="user.send_time.hour">
-                        <option :value="k" v-for="(v,k) in new Array(24)">&nbsp;&nbsp;{{k}}时</option>
-                    </select>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <select class="mdui-select" v-model="user.send_time.minute">
-                        <option :value="k" v-for="(v,k) in new Array(60)">&nbsp;&nbsp;{{k}}分</option>
-                    </select>
-                </div>
-                <div class="mdui-textfield">
-                    <label class="mdui-textfield-label">注册时间</label>
-                    <input class="mdui-textfield-input" type="text" disabled v-model="user.create_time"/>
-                </div>
-                <div class="mdui-textfield">
-                    <label class="mdui-textfield-label">最后执行时间</label>
-                    <input class="mdui-textfield-input" type="text" disabled v-model="user.run_time"/>
-                </div>
-                <div>
-                    <button class="mdui-btn mdui-btn-block mdui-btn-raised mdui-color-theme-accent" @click="save">提交
-                    </button>
-                </div>
+            <div class="mdui-textfield">
+                <label class="mdui-textfield-label">近七日是否有跨区域（城市）的外出</label>
+                <label class="mdui-radio">
+                    <input type="radio" name="goOut" v-model="user.goOut" value="1"/>
+                    <i class="mdui-radio-icon"></i>
+                    无外出&nbsp;&nbsp;&nbsp;&nbsp;
+                </label>
+                <label class="mdui-radio">
+                    <input type="radio" name="goOut" v-model="user.goOut" value="2"/>
+                    <i class="mdui-radio-icon"></i>
+                    有外出
+                </label>
+                <textarea class="mdui-textfield-input" placeholder="选填" v-model="user.goOutRemark"></textarea>
             </div>
-            <div id="tab2" class="mdui-p-a-2">
-                <div class="mdui-text-right mdui-m-b-3">
-                    <button class="mdui-btn mdui-btn-raised mdui-color-theme-accent" @click="test">
-                        测试执行
-                    </button>
-                </div>
-                <div class="mdui-table-fluid">
-                    <table class="mdui-table">
-                        <thead>
-                        <tr>
-                            <th>上报时间</th>
-                            <th>执行结果</th>
-                            <th>体温</th>
-                            <th>地区</th>
-                            <th>经纬度</th>
-                            <th>身体状况</th>
-                            <th>近七日是否去过高风险地区</th>
-                            <th>近七日接触情况</th>
-                            <th>近七日是否有跨区域（城市）的外出</th>
-                            <th>同住家人身体情况</th>
-                            <th>其他不适症状</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr v-for="(item,index) in logs" key="index">
-                            <td>{{item.create_time}}</td>
-                            <td>{{item.message}}</td>
-                            <td>{{item.temperature}}℃</td>
-                            <td>{{item.coordinates}}</td>
-                            <td>{{item.location}}</td>
-                            <td>{{item.healthState==1?'无异常情况（体温<37.3）':'有发烧、发热症状'}}</td>
-                            <td>{{item.dangerousRegion==1?'是':'否'}}</td>
-                            <td v-if="item.contactSituation==0">接触过中高风险地区人员</td>
-                            <td v-if="item.contactSituation==1">与确诊或疑似病例有接触</td>
-                            <td v-if="item.contactSituation==2">无接触</td>
-                            <td>{{item.goOut==1?'无外出':'有外出'}}</td>
-                            <td>{{item.familySituation==1?'无异常':'有发热'}}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <div class="mdui-textfield">
+                <label class="mdui-textfield-label">同住家人身体情况</label>
+                <label class="mdui-radio">
+                    <input type="radio" name="familySituation" v-model="user.familySituation" value="1"/>
+                    <i class="mdui-radio-icon"></i>
+                    无异常&nbsp;&nbsp;&nbsp;&nbsp;
+                </label>
+                <label class="mdui-radio">
+                    <input type="radio" name="familySituation" v-model="user.familySituation" value="2"/>
+                    <i class="mdui-radio-icon"></i>
+                    有发热
+                </label>
             </div>
-            <div id="tab3" class="mdui-p-a-2">
-                <div class="mdui-table-fluid">
-                    <table class="mdui-table">
-                        <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>用户名</th>
-                            <th>地区</th>
-                            <th>执行结果</th>
-                            <th>上报时间</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr v-for="(item,index) in status" key="index">
-                            <td>{{index+1}}</td>
-                            <td>{{item.username}}</td>
-                            <td>{{item.coordinates}}</td>
-                            <td>{{item.message}}</td>
-                            <td>{{item.create_time}}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <div class="mdui-textfield">
+                <label class="mdui-textfield-label">其他不适症状（选填）</label>
+                <textarea class="mdui-textfield-input" placeholder="选填" v-model="user.remark"></textarea>
             </div>
-            <div id="tab4" class="mdui-p-a-2">
-                <h2>更新日志</h2>
-                <div class="mdui-typo">
-                    作者博客：
-                    <a target="_blank" href="https://blog.hidove.cn">https://blog.hidove.cn</a>
-                </div>
-                <ul class="mdui-list" v-for="(item,index) in updateLog">
-                    <h4 v-if="index==0">
-                        {{new Date(item.commit.committer.date).toDateString()}}
-                    </h4>
-                    <h4 v-if="index!=0 && !is_same_day(item.commit.committer.date,updateLog[index-1].commit.committer.date)">
-                        {{new Date(item.commit.committer.date).toDateString()}}
-                    </h4>
-                    <li class="mdui-list-item mdui-ripple">
-                        <div class="mdui-list-item-avatar"><img :src="item.author.avatar_url"/></div>
-                        <div class="mdui-list-item-content">
-                            <div class="mdui-list-item-title">{{item.commit.message}}</div>
-                            <div class="mdui-list-item-text mdui-list-item-one-line">
-                                <span class="mdui-text-color-theme-text"><strong>{{item.author.login}}</strong></span>
-                                {{format_ago((new Date().getTime() - new
-                                Date(item.commit.committer.date).getTime())/1000)}}前
-                            </div>
+            <div class="mdui-textfield">
+                <label class="mdui-textfield-label">是否开启自动上报</label>
+                <label class="mdui-radio">
+                    <input type="radio" name="status" v-model="user.status" value="1"/>
+                    <i class="mdui-radio-icon"></i>
+                    是&nbsp;&nbsp;&nbsp;&nbsp;
+                </label>
+                <label class="mdui-radio">
+                    <input type="radio" name="status" v-model="user.status" value="0"/>
+                    <i class="mdui-radio-icon"></i>
+                    否
+                </label>
+            </div>
+            <div class="mdui-textfield">
+                <label class="mdui-textfield-label">每日上报时间</label>
+                <select class="mdui-select" v-model="user.send_time.hour">
+                    <option :value="k" v-for="(v,k) in new Array(24)">&nbsp;&nbsp;{{k}}时</option>
+                </select>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <select class="mdui-select" v-model="user.send_time.minute">
+                    <option :value="k" v-for="(v,k) in new Array(60)">&nbsp;&nbsp;{{k}}分</option>
+                </select>
+            </div>
+            <div class="mdui-textfield">
+                <label class="mdui-textfield-label">注册时间</label>
+                <input class="mdui-textfield-input" type="text" disabled v-model="user.create_time"/>
+            </div>
+            <div class="mdui-textfield">
+                <label class="mdui-textfield-label">最后执行时间</label>
+                <input class="mdui-textfield-input" type="text" disabled v-model="user.run_time"/>
+            </div>
+            <div>
+                <button class="mdui-btn mdui-btn-block mdui-btn-raised mdui-color-theme-accent" @click="save">提交
+                </button>
+            </div>
+        </div>
+        <div id="tab2">
+            <div class="mdui-text-right mdui-m-a-1">
+                <button class="mdui-btn mdui-btn-raised mdui-color-theme-accent" @click="test">
+                    测试执行
+                </button>
+            </div>
+            <div class="mdui-table-fluid">
+                <table class="mdui-table">
+                    <thead>
+                    <tr>
+                        <th>上报时间</th>
+                        <th>执行结果</th>
+                        <th>体温</th>
+                        <th>地区</th>
+                        <th>经纬度</th>
+                        <th>身体状况</th>
+                        <th>近七日是否去过高风险地区</th>
+                        <th>近七日接触情况</th>
+                        <th>近七日是否有跨区域（城市）的外出</th>
+                        <th>同住家人身体情况</th>
+                        <th>其他不适症状</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(item,index) in logs" key="index">
+                        <td>{{item.create_time}}</td>
+                        <td>{{item.message}}</td>
+                        <td>{{item.temperature}}℃</td>
+                        <td>{{item.coordinates}}</td>
+                        <td>{{item.location}}</td>
+                        <td>{{item.healthState==1?'无异常情况（体温<37.3）':'有发烧、发热症状'}}</td>
+                        <td>{{item.dangerousRegion==1?'是':'否'}}</td>
+                        <td v-if="item.contactSituation==0">接触过中高风险地区人员</td>
+                        <td v-if="item.contactSituation==1">与确诊或疑似病例有接触</td>
+                        <td v-if="item.contactSituation==2">无接触</td>
+                        <td>{{item.goOut==1?'无外出':'有外出'}}</td>
+                        <td>{{item.familySituation==1?'无异常':'有发热'}}</td>
+                        <td>{{item.remark}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div id="tab3">
+            <div class="mdui-table-fluid">
+                <table class="mdui-table">
+                    <thead>
+                    <tr>
+                        <th>上报时间</th>
+                        <th>用户名</th>
+                        <th>地区</th>
+                        <th>执行结果</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(item,index) in status" key="item.id">
+                        <td>{{item.create_time}}</td>
+                        <td>{{item.username}}</td>
+                        <td>{{item.coordinates}}</td>
+                        <td>{{item.message}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div id="tab4" class="mdui-card-content">
+            <h2>更新日志</h2>
+            <div class="mdui-typo">
+                作者Github：
+                <a target="_blank" href="https://github.com/hidove">https://github.com/hidove</a>
+            </div>
+            <ul class="mdui-list" v-for="(item,index) in updateLog">
+                <h4 v-if="index==0">
+                    {{new Date(item.commit.committer.date).toDateString()}}
+                </h4>
+                <h4 v-if="index!=0 && !is_same_day(item.commit.committer.date,updateLog[index-1].commit.committer.date)">
+                    {{new Date(item.commit.committer.date).toDateString()}}
+                </h4>
+                <li class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-avatar"><img :src="item.author.avatar_url"/></div>
+                    <div class="mdui-list-item-content">
+                        <div class="mdui-list-item-title">{{item.commit.message}}</div>
+                        <div class="mdui-list-item-text mdui-list-item-one-line">
+                            <span class="mdui-text-color-theme-text"><strong>{{item.author.login}}</strong></span>
+                            {{format_ago((new Date().getTime() - new
+                            Date(item.commit.committer.date).getTime())/1000)}}前
                         </div>
-                    </li>
-                    <li class="mdui-divider" v-if="index<updateLog.length-1"></li>
-                </ul>
-
-            </div>
+                    </div>
+                </li>
+                <li class="mdui-divider" v-if="index<updateLog.length-1"></li>
+            </ul>
 
         </div>
-    </div>
 
+    </div>
 </div>
 {/block}
 ﻿
 {block name="script"}
 <script>
-    var vm = new Vue({
+    new Vue({
         el: '#app',
         data: {
             user: {
@@ -312,47 +320,37 @@
         },
         methods: {
             save() {
-                let that = this;
-                axios.post('/user/post', that.user)
-                    .then((response) => {
-                        let res = response.data;
-                        msg(res.msg);
+                $request.post('/user/post', this.user)
+                    .then((res) => {
+                        $message.success(res.msg);
                     })
             },
             get_logs() {
-                let that = this;
-                axios.get('/user/log')
-                    .then((response) => {
-                        let res = response.data;
-                        that.logs = res.data;
+                $request.get('/user/log')
+                    .then((res) => {
+                        this.logs = res.data;
                     })
             },
             get_status() {
-                let that = this;
-                axios.get('/api/status')
-                    .then((response) => {
-                        let res = response.data;
-                        that.status = res.data;
+                $request.get('/api/status')
+                    .then((res) => {
+                        this.status = res.data;
                     })
             },
             test() {
-                let that = this;
-                axios.get('/user/test')
-                    .then((response) => {
-                        let res = response.data;
+                $request.get('/user/test')
+                    .then((res) => {
                         if (res.code === 200) {
-                            that.get_logs();
-                            that.get_status();
+                            this.get_logs();
+                            this.get_status();
                         }
-                        msg(res.msg);
+                        $message.success(res.msg);
                     })
             },
             get_update_log() {
-                let that = this;
-                axios.get('https://api.github.com/repos/Hidove/Xiaobei/commits')
-                    .then((response) => {
-                        let res = response.data;
-                        that.updateLog = res;
+                $request.get('https://api.github.com/repos/Hidove/Xiaobei/commits')
+                    .then((res) => {
+                        this.updateLog = res;
                     })
             }
         }
