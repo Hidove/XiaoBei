@@ -174,6 +174,29 @@
                 </select>
             </div>
             <div class="mdui-textfield">
+                <label class="mdui-textfield-label">是否开启Server酱通知</label>
+                <label class="mdui-radio">
+                    <input type="radio" name="status" v-model="user.notification.status" value="1"/>
+                    <i class="mdui-radio-icon"></i>
+                    是&nbsp;&nbsp;&nbsp;&nbsp;
+                </label>
+                <label class="mdui-radio">
+                    <input type="radio" name="status" v-model="user.notification.status" value="0"/>
+                    <i class="mdui-radio-icon"></i>
+                    否
+                </label>
+            </div>
+            <a class="mdui-chip" href="https://sct.ftqq.com/" target="_blank">
+              <span class="mdui-chip-icon">
+                <i class="mdui-icon material-icons">face</i>
+              </span>
+                <span class="mdui-chip-title">获取Server酱</span>
+            </a>
+            <div class="mdui-textfield">
+                <label class="mdui-textfield-label">Server酱SendKey</label>
+                <input class="mdui-textfield-input" type="text" v-model="user.notification.sct_key"/>
+            </div>
+            <div class="mdui-textfield">
                 <label class="mdui-textfield-label">注册时间</label>
                 <input class="mdui-textfield-input" type="text" disabled v-model="user.create_time"/>
             </div>
@@ -305,6 +328,7 @@
                 remark: '{$hidove.user.remark}',
                 status: '{$hidove.user.status}',
                 send_time: JSON.parse('{:json_encode($hidove.user.send_time)}'),
+                notification: JSON.parse('{:json_encode($hidove.user.notification)}'),
                 create_time: '{$hidove.user.create_time}',
                 run_time: '{:fomate_date($hidove.user.run_time)}',
             }
