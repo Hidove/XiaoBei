@@ -364,10 +364,8 @@
             test() {
                 $request.get('/user/test')
                     .then((res) => {
-                        if (res.code === 200) {
-                            this.get_logs();
-                            this.get_status();
-                        }
+                        this.get_logs();
+                        this.get_status();
                         $message.success(res.msg);
                     })
             },
